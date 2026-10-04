@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f4c5c">
+<title>SkillTwin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{--ink:#0b2b33;--teal:#0f4c5c;--sand:#f4f1ea;--gold:#e9a23b;--line:#cfd8d6;--err:#b3261e;--ok:#1b7a4b}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:'Sora',system-ui,sans-serif;background:var(--teal);color:var(--ink);
+ padding:env(safe-area-inset-top,0) 16px env(safe-area-inset-bottom,0);display:flex;align-items:center;justify-content:center;min-height:100vh}
+.wrap{width:100%;max-width:420px;padding:24px 0}
+.brand{color:#fff;font-size:30px;font-weight:700;margin:0 0 4px}
+.tag{color:#c7dde2;margin:0 0 22px;font-size:14px}
+.card{background:var(--sand);border-radius:14px;padding:24px}
+h2{margin:0 0 6px;font-size:21px}
+.sub{margin:0 0 18px;color:#46605f;font-size:14px;line-height:1.5}
+label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px}
+input{width:100%;font:inherit;font-size:16px;padding:12px 13px;border:1.5px solid var(--line);border-radius:9px;background:#fff;color:var(--ink)}
+input:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+input.code{letter-spacing:.45em;text-align:center;font-size:24px;font-weight:700}
+.btn{width:100%;margin-top:20px;padding:13px;border:0;border-radius:9px;background:var(--teal);color:#fff;font:inherit;font-weight:600;font-size:16px;cursor:pointer}
+.btn:disabled{opacity:.55;cursor:wait}
+.link{background:none;border:0;padding:0;font:inherit;font-size:14px;color:var(--teal);font-weight:600;text-decoration:underline;cursor:pointer}
+.row{display:flex;justify-content:space-between;gap:10px;margin-top:16px;flex-wrap:wrap}
+.msg{margin-top:14px;font-size:14px;line-height:1.45;min-height:1px}
+.msg.err{color:var(--err)}.msg.ok{color:var(--ok)}
+.warn{background:var(--gold);color:var(--ink);padding:10px 12px;border-radius:9px;font-size:13px;margin-bottom:14px}
+.hide{display:none}
+.hello{font-size:15px;line-height:1.6}
+@media (prefers-reduced-motion:no-preference){.card{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="brand">SkillTwin</h1>
+  <p class="tag">Your career evolves. Your SkillTwin evolves with you.</p>
+  <div id="cfgwarn" class="warn hide">Open index.html and paste your Supabase URL and key at the top of the script.</div>
+
+  <!-- LOGIN -->
+  <form class="card" id="s-login" data-screen>
+    <h2>Welcome back</h2><p class="sub">Log in with your email and password.</p>
+    <label for="l-email">Email</label><input id="l-email" type="email" autocomplete="email" required>
+    <label for="l-pass">Password</label><input id="l-pass" type="password" autocomplete="current-password" required>
+    <button class="btn" type="submit">Log in</button>
+    <div class="msg" role="alert"></div>
+    <div class="row"><button type="button" class="link" data-go="forgot">Forgot password?</button><button type="button" class="link" data-go="signup">Create account</button></div>
+  </form>
+
+  <!-- SIGN UP -->
+  <form class="card hide" id="s-signup" data-screen>
+    <h2>Create your account</h2><p class="sub">We will email you a code to verify your address.</p>
+    <label for="s-email">Email</label><input id="s-email" type="email" autocomplete="email" required>
+    <label for="s-pass">Password (at least 8 characters)</label><input id="s-pass" type="password" autocomplete="new-password" minlength="8" required>
+    <label for="s-pass2">Confirm password</label><input id="s-pass2" type="password" autocomplete="new-password" minlength="8" required>
+    <button class="btn" type="submit">Send verification code</button>
+    <div class="msg" role="alert"></div>
+    <div class="row"><button type="button" class="link" data-go="login">I already have an account</button></div>
+  </form>
+
+  <!-- VERIFY SIGN UP CODE -->
+  <form class="card hide" id="s-verify" data-screen>
+    <h2>Check your email</h2><p class="sub">Enter the code sent to <b class="who"></b>. If you cannot see it, check Spam.</p>
+    <label for="v-code">Verification code</label><input id="v-code" class="code" inputmode="numeric" maxlength="8" autocomplete="one-time-code" required>
+    <button class="btn" type="submit">Verify and continue</button>
+    <div class="msg" role="alert"></div>
+    <div class="row"><button type="button" class="link" id="v-resend">Send a new code</button><button type="button" class="link" data-go="login">Back to log in</button></div>
+  </form>
+
+  <!-- FORGOT PASSWORD: ASK EMAIL -->
+  <form class="card hide" id="s-forgot" data-screen>
+    <h2>Reset your password</h2><p class="sub">Enter your email and we will send you a reset code.</p>
+    <label for="f-email">Email</label><input id="f-email" type="email" autocomplete="email" required>
+    <button class="btn" type="submit">Send reset code</button>
+    <div class="msg" role="alert"></div>
+    <div class="row"><button type="button" class="link" data-go="login">Back to log in</button></div>
+  </form>
+
+  <!-- RESET: CODE + NEW PASSWORD -->
+  <form class="card hide" id="s-reset" data-screen>
+    <h2>Choose a new password</h2><p class="sub">Enter the code sent to <b class="who"></b> and your new password.</p>
+    <label for="r-code">Reset code</label><input id="r-code" class="code" inputmode="numeric" maxlength="8" autocomplete="one-time-code" required>
+    <label for="r-pass">New password (at least 8 characters)</label><input id="r-pass" type="password" autocomplete="new-password" minlength="8" required>
+    <button class="btn" type="submit">Save new password</button>
+    <div class="msg" role="alert"></div>
+    <div class="row"><button type="button" class="link" data-go="login">Back to log in</button></div>
+  </form>
+
+  <!-- HOME (after login) -->
+  <div class="card hide" id="s-home" data-screen>
+    <h2>You are logged in</h2>
+    <p class="hello">Signed in as <b id="h-email"></b>.<br>Your Career Twin chat will appear here in the next step.</p>
+    <button class="btn" id="logout" type="button">Log out</button>
+  </div>
+</div>
+
+<script>
+// ====== 1. PASTE YOUR TWO VALUES HERE (keep the quote marks) ======
+const SUPABASE_URL = "https://dezusavxdpzaneddries.supabase.co";
+const SUPABASE_KEY = "sb_publishable_nVrnX-3V4K8_0pZ6D52B-w_Y-MXt1-7";
+// ===================================================================
+
+const configured = !SUPABASE_URL.startsWith("PASTE") && !SUPABASE_KEY.startsWith("PASTE");
+if (!configured) document.getElementById("cfgwarn").classList.remove("hide");
+const sb = configured ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+const $ = id => document.getElementById(id);
+let pendingEmail = "", cooldownTimer = null;
+
+function show(name) {
+  document.querySelectorAll("[data-screen]").forEach(el => el.classList.add("hide"));
+  $("s-" + name).classList.remove("hide");
+  document.querySelectorAll(".msg").forEach(m => { m.textContent = ""; m.className = "msg"; });
+  document.querySelectorAll(".who").forEach(w => w.textContent = pendingEmail);
+}
+function say(form, text, type) {
+  const m = form.querySelector(".msg"); m.textContent = text; m.className = "msg " + type;
+}
+async function run(form, fn) {
+  if (!sb) { say(form, "Add your Supabase URL and key first.", "err"); return; }
+  const btn = form.querySelector(".btn"); btn.disabled = true;
+  try { await fn(); } catch (e) { say(form, friendly(e), "err"); }
+  btn.disabled = false;
+}
+function friendly(e) {
+  const t = (e && e.message || "Something went wrong.").toLowerCase();
+  if (t.includes("invalid login")) return "Wrong email or password. If you forgot it, use Forgot password.";
+  if (t.includes("expired") || t.includes("invalid")) return "That code is wrong or has expired. Request a new one.";
+  if (t.includes("rate") || t.includes("seconds")) return "Please wait a minute before asking for another email.";
+  if (t.includes("same password")) return "Choose a password different from your old one.";
+  return e.message || "Something went wrong. Try again.";
+}
+function startCooldown() {
+  const b = $("v-resend"); let s = 60; b.disabled = true; clearInterval(cooldownTimer);
+  cooldownTimer = setInterval(() => {
+    s--; b.textContent = s > 0 ? "Send a new code (" + s + "s)" : "Send a new code";
+    if (s <= 0) { clearInterval(cooldownTimer); b.disabled = false; }
+  }, 1000);
+}
+function goHome(user) { $("h-email").textContent = user.email; show("home"); }
+
+document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => show(b.dataset.go)));
+
+// LOGIN
+$("s-login").addEventListener("submit", e => { e.preventDefault(); const f = e.target;
+  run(f, async () => {
+    const email = $("l-email").value.trim().toLowerCase();
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: $("l-pass").value });
+    if (error) {
+      if (error.message.toLowerCase().includes("not confirmed")) {
+        pendingEmail = email; await sb.auth.resend({ type: "signup", email });
+        show("verify"); startCooldown(); say($("s-verify"), "Please verify your email first. We sent a new code.", "ok"); return;
+      }
+      throw error;
+    }
+    goHome(data.user);
+  });
+});
+
+// SIGN UP -> sends code
+$("s-signup").addEventListener("submit", e => { e.preventDefault(); const f = e.target;
+  run(f, async () => {
+    const email = $("s-email").value.trim().toLowerCase(), pw = $("s-pass").value;
+    if (pw.length < 8) return say(f, "Password must be at least 8 characters.", "err");
+    if (pw !== $("s-pass2").value) return say(f, "The two passwords do not match.", "err");
+    const { data, error } = await sb.auth.signUp({ email, password: pw });
+    if (error) throw error;
+    if (data.user && data.user.identities && data.user.identities.length === 0)
+      return say(f, "This email is already registered. Please log in instead.", "err");
+    pendingEmail = email; show("verify"); startCooldown();
+  });
+});
+
+// VERIFY SIGN-UP CODE
+$("s-verify").addEventListener("submit", e => { e.preventDefault(); const f = e.target;
+  run(f, async () => {
+    const { data, error } = await sb.auth.verifyOtp({ email: pendingEmail, token: $("v-code").value.trim(), type: "signup" });
+    if (error) throw error;
+    goHome(data.user);
+  });
+});
+$("v-resend").addEventListener("click", async () => {
+  const f = $("s-verify"); const { error } = await sb.auth.resend({ type: "signup", email: pendingEmail });
+  if (error) say(f, friendly(error), "err"); else { say(f, "A new code is on its way.", "ok"); startCooldown(); }
+});
+
+// FORGOT PASSWORD -> sends code
+$("s-forgot").addEventListener("submit", e => { e.preventDefault(); const f = e.target;
+  run(f, async () => {
+    pendingEmail = $("f-email").value.trim().toLowerCase();
+    const { error } = await sb.auth.resetPasswordForEmail(pendingEmail);
+    if (error) throw error;
+    show("reset");
+  });
+});
+
+// RESET: verify code, then set new password
+$("s-reset").addEventListener("submit", e => { e.preventDefault(); const f = e.target;
+  run(f, async () => {
+    const { error } = await sb.auth.verifyOtp({ email: pendingEmail, token: $("r-code").value.trim(), type: "recovery" });
+    if (error) throw error;
+    const { data, error: e2 } = await sb.auth.updateUser({ password: $("r-pass").value });
+    if (e2) throw e2;
+    goHome(data.user);
+  });
+});
+
+// LOGOUT
+$("logout").addEventListener("click", async () => { if (sb) await sb.auth.signOut(); show("login"); });
+
+// Stay logged in on return visits
+if (sb) sb.auth.getSession().then(({ data }) => { if (data.session) goHome(data.session.user); });
+</script>
+</body>
+</html>

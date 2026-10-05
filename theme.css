@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+:root{--ink:#0b2b33;--teal:#0f4c5c;--deep:#082c36;--sand:#f6f2ea;--gold:#e9a23b}
+body{background:radial-gradient(1200px 600px at 80% -10%,#17687b 0%,transparent 60%),linear-gradient(160deg,#0b3a47,#082c36);
+ background-attachment:fixed;position:relative}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='420' viewBox='0 0 700 420' fill='none' stroke='white' stroke-opacity='.06'%3E%3Cpath d='M0 70C140 10 260 140 400 70S600 30 700 80'/%3E%3Cpath d='M0 130C140 70 260 200 400 130S600 90 700 140'/%3E%3Cpath d='M0 190C140 130 260 260 400 190S600 150 700 200'/%3E%3Cpath d='M0 250C140 190 260 320 400 250S600 210 700 260'/%3E%3Cpath d='M0 310C140 250 260 380 400 310S600 270 700 320'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:1}
+h1,h2,.qtitle,#hero h1,.mark b{font-family:'Fraunces',Georgia,serif;letter-spacing:-.01em}
+.brand,.tag{display:none}
+.card{border-radius:20px;padding:30px;box-shadow:0 30px 70px rgba(0,0,0,.32)}
+.card h2{font-size:28px;margin-bottom:8px}
+.btn{background:var(--gold);color:var(--ink);font-weight:700;border-radius:12px}
+.btn:hover{filter:brightness(1.06)}
+input{border-radius:12px}
+/* hero */
+#hero{color:#fff}
+#hero .mark{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+#hero .mark b{font-size:24px}
+#hero .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
+#hero h1{font-size:46px;line-height:1.08;margin:10px 0 14px;font-weight:700}
+#hero h1 em{color:var(--gold);font-style:italic}
+#hero p{color:#c7dde2;font-size:16px;line-height:1.6;max-width:480px;margin:0}
+#hero .chips{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}
+#hero .chips span{border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:7px 14px;font-size:13px}
+#hero svg.viz{width:100%;max-width:460px;height:auto;margin-top:6px}
+body:not(.app) .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,440px);gap:56px;max-width:1040px;align-items:center}
+body:not(.app) #hero{grid-column:1;grid-row:1}
+body:not(.app) .wrap>form,body:not(.app) #cfgwarn{grid-column:2;grid-row:1}
+body:not(.app) #cfgwarn{grid-row:2}
+/* app shell */
+#appbar{position:fixed;top:0;left:0;right:0;z-index:30;background:#082c36;border-bottom:1px solid rgba(255,255,255,.1);padding-top:env(safe-area-inset-top,0)}
+#appbar .in{max-width:980px;margin:0 auto;padding:0 20px;height:64px;display:flex;align-items:center;gap:18px}
+#appbar .mark{display:flex;align-items:center;gap:9px;color:#fff}
+#appbar .mark b{font-size:21px}
+#appbar .sp{flex:1}
+#appbar .who2{color:#c7dde2;font-size:13px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#appbar .out{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
+#appnav{display:flex;gap:4px}
+#appnav button{display:flex;align-items:center;gap:7px;background:none;border:0;border-bottom:3px solid transparent;color:#c7dde2;font:inherit;font-size:14px;font-weight:600;padding:0 12px;height:64px;cursor:pointer}
+#appnav button svg{width:18px;height:18px}
+#appnav button.on{color:#fff;border-bottom-color:var(--gold)}
+#appnav button.on svg{color:var(--gold)}
+body:not(.app) #appbar{display:none}
+body.app{align-items:flex-start;padding-top:calc(88px + env(safe-area-inset-top,0))}
+body.app .wrap{max-width:980px;padding:8px 0 40px}
+body.app #s-home{background:none;padding:0;box-shadow:none}
+body.app #s-home>h2,body.app #logout,body.app .hello{display:none}
+body.app #chatbox,body.app #passport,body.app #quiz,body.app #plans,body.app #roadmap{background:var(--sand);border-radius:20px;padding:24px;box-shadow:0 30px 70px rgba(0,0,0,.3);max-height:none;overflow:visible}
+body.app #chatbox{height:calc(100vh - 150px);min-height:420px}
+@supports(height:100dvh){body.app #chatbox{height:calc(100dvh - 150px)}}
+.chathead .t{font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;line-height:1.2}
+.chathead .s{font-size:14px;color:#46605f;margin:4px 0 12px}
+.bub.ai::before{content:"SkillTwin AI";display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:3px}
+.bub{font-size:15.5px}
+.tools #qlink,.tools #viewpass,.tools #pllink,.tools #rmlink{display:none}
+.tools{margin-top:12px;gap:8px}
+.tools .link{text-decoration:none;border:1.5px solid var(--teal);border-radius:999px;padding:6px 14px;font-size:13px;background:#fff}
+@media(max-width:899px){
+ body:not(.app) .wrap{display:block;max-width:440px}
+ body:not(.app) #hero{margin-bottom:22px}
+ #hero h1{font-size:32px}#hero .chips,#hero svg.viz{display:none}
+ #hero .mark{margin-bottom:16px}
+ #appbar .who2{display:none}
+ #appnav{position:fixed;left:0;right:0;bottom:0;background:#082c36;border-top:1px solid rgba(255,255,255,.12);padding-bottom:env(safe-area-inset-bottom,0);justify-content:space-around;gap:0;z-index:40}
+ #appnav button{flex-direction:column;gap:3px;font-size:11px;height:58px;padding:0 4px;flex:1;border-bottom:0;border-top:3px solid transparent}
+ #appnav button.on{border-top-color:var(--gold)}
+ body.app{padding-left:12px;padding-right:12px}
+ body.app .wrap{padding-bottom:84px}
+ body.app #chatbox{height:calc(100dvh - 240px);padding:16px}
+ body.app #passport,body.app #quiz,body.app #plans,body.app #roadmap{padding:18px}
+ .card{padding:24px}
+}
+
+body.app #hero{display:none}

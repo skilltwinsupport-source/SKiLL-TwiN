@@ -1,0 +1,91 @@
+/* SkillTwin dark dashboard. Loaded by ui.js after theme.css. Login screen is untouched. */
+body.app.dash{display:block;padding:0;background:#07161c;color:#e8f1f3;
+ --ink:#e8f1f3;--line:#21424d;--teal:#3bb4c9;--panel:#0e232b;--panel2:#143039;--mut:#8fb0b8}
+body.app.dash:before{display:none}
+html:has(body.app.dash){overflow-x:hidden}
+body.app.dash{overflow-x:hidden}
+body.app.dash .wrap{width:auto;max-width:none;min-width:0;margin-left:248px;padding:28px 32px 48px}
+body.app.dash :is(#chatbox,#passport,#quiz,#plans,#roadmap,#profile){min-width:0;max-width:100%}
+body.app.dash #chatlog,body.app.dash #chatform{min-width:0}
+body.app.dash .bub{max-width:min(88%,760px);overflow-wrap:anywhere}
+
+/* sidebar */
+body:not(.app) #side{display:none}
+#side{position:fixed;top:0;bottom:0;left:0;width:248px;z-index:40;display:flex;flex-direction:column;
+ background:#051217;border-right:1px solid #16303a;padding:calc(18px + env(safe-area-inset-top,0px)) 12px 14px}
+#side .top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 4px}
+#side .mark{display:flex;align-items:center;gap:9px;color:#fff}
+#side .mark b{font-size:20px}
+#coll{width:30px;height:30px;display:grid;place-items:center;background:none;border:1px solid #21424d;border-radius:8px;color:#8fb0b8;cursor:pointer}
+#coll svg{width:16px;height:16px}
+#snav{display:flex;flex-direction:column;gap:4px;margin-top:24px;flex:1}
+#snav button,#side .out{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-radius:10px;
+ color:#8fb0b8;font:inherit;font-size:14px;font-weight:600;padding:11px 12px;cursor:pointer;text-align:left}
+#snav svg,#side .out svg{width:20px;height:20px;flex:none}
+#snav button:hover,#side .out:hover{background:#0e232b;color:#fff}
+#snav button.on{background:#12303a;color:#fff;box-shadow:inset 3px 0 0 var(--gold)}
+#snav button.on svg{color:var(--gold)}
+#side .foot{border-top:1px solid #16303a;padding-top:12px;display:grid;gap:6px}
+#side .me{display:flex;align-items:center;gap:10px;padding:6px 12px;cursor:pointer;color:#e8f1f3;font-size:14px;font-weight:600}
+.av{width:34px;height:34px;flex:none;border-radius:50%;background:var(--gold);color:#0b2b33;display:grid;place-items:center;font-weight:700}
+#side .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* panels */
+body.app.dash :is(#chatbox,#passport,#quiz,#plans,#roadmap,#profile){background:var(--panel);border:1px solid var(--line);
+ box-shadow:none;border-radius:18px;padding:24px;color:var(--ink)}
+body.app.dash #chatbox{height:calc(100dvh - 90px);min-height:420px}
+body.app.dash .chathead .t{color:#fff}
+body.app.dash :is(.sub,.meta,.goal,#plans .note,#passport .meta,#quiz .meta,.chathead .s){color:var(--mut)!important}
+body.app.dash .bub.ai{background:var(--panel2);border-color:var(--line);color:var(--ink)}
+body.app.dash .bub.me{background:#1f8aa0}
+body.app.dash .bub.err{background:#3a1d1d;color:#ffb4ab;border-color:#6b2b2b}
+body.app.dash #passport .car,body.app.dash #plans .pc,body.app.dash #roadmap .ph,body.app.dash #quiz .opt,
+body.app.dash #quiz .chip,body.app.dash #roadmap .chip{background:var(--panel2);color:var(--ink);border-color:var(--line)}
+body.app.dash #quiz .chip,body.app.dash #roadmap .chip{color:var(--teal);border-color:var(--teal)}
+body.app.dash #plans .pc.pro{border-color:var(--teal)}
+body.app.dash #quiz .opt.ok{background:#10301f;border-color:#2f9e63}
+body.app.dash #quiz .opt.bad{background:#3a1d1d;border-color:#c0443b}
+body.app.dash #roadmap .bar{background:var(--panel2)}
+body.app.dash #roadmap label.done span{color:#6f8c94}
+body.app.dash input{background:var(--panel2);color:var(--ink);border-color:var(--line)}
+body.app.dash input::placeholder{color:#6f8c94}
+body.app.dash .tools .link{background:var(--panel2);color:var(--ink);border-color:var(--line)}
+body.app.dash .tools .link:hover{border-color:var(--teal)}
+body.app.dash #pback,body.app.dash #qback,body.app.dash #qback2,body.app.dash #plback,body.app.dash #rback{display:none}
+
+/* profile */
+#profile h3{margin:26px 0 10px;font-size:14px;color:var(--teal)}
+#profile label{color:var(--ink)}
+#profile .pcard{display:flex;gap:16px;align-items:center;margin:14px 0 8px}
+#profile .av.big{width:60px;height:60px;font-size:24px}
+#profile .pcard b{font-size:18px}
+#profile .btn{width:auto;padding:12px 22px}
+#profile .btn.ghost{background:none;color:var(--ink);border:1px solid var(--line);margin-top:26px}
+#profile .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+#profile .stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}
+#profile .stat b{display:block;font-size:22px}
+#profile .stat span{font-size:13px;color:var(--mut)}
+#profile form{max-width:420px}
+
+/* collapsed rail (desktop only) */
+@media(min-width:900px){
+ body.collapsed.app.dash .wrap{margin-left:80px}
+ body.collapsed #side{width:72px}
+ body.collapsed #side .top{flex-direction:column;gap:12px}
+ body.collapsed #side :is(.mark b,#snav span,.nm,.out span){display:none}
+ body.collapsed #snav button,body.collapsed #side .out,body.collapsed #side .me{justify-content:center;padding-left:0;padding-right:0}
+ body.collapsed #coll svg{transform:rotate(180deg)}
+}
+
+/* mobile: sidebar becomes a bottom bar */
+@media(max-width:899px){
+ #side{top:auto;width:auto;left:0;right:0;flex-direction:row;padding:0 0 env(safe-area-inset-bottom,0);border-right:0;border-top:1px solid #16303a}
+ #side .top,#side .foot{display:none}
+ #snav{flex-direction:row;margin:0;gap:0}
+ #snav button{flex:1;flex-direction:column;gap:3px;justify-content:center;font-size:10.5px;padding:9px 2px;border-radius:0}
+ #snav button.on{box-shadow:inset 0 3px 0 var(--gold)}
+ body.app.dash .wrap{margin-left:0;padding:14px 12px 90px}
+ body.app.dash #chatbox{height:calc(100dvh - 130px);padding:16px}
+ body.app.dash :is(#passport,#quiz,#plans,#roadmap,#profile){padding:18px}
+ #profile .stats{grid-template-columns:1fr}
+}
